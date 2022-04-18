@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int main()
+{
+    int num, mod, mod1, mod2, mod3;
+    scanf("%d",&num);
+    mod = num % 10;  //split last digit from number
+    mod1 = ((num-mod)/10) % 10;
+    mod2 = ((num-mod1)/100) % 10;
+    mod3 = ((num-mod2)/1000) % 10;
+printf("\n%i\n%i\n%i\n%i", mod3, mod2, mod1, mod);
+    return 0;
+}
