@@ -4,10 +4,11 @@ int main()
 {
     int i, cont, num, mod, mod1, mod2, mod3;
 
+    printf("Digite um valor entre 1000 e 9999: \n");
     cont=1;
     for(i=1; i<=cont; i++)
     {
-        printf("Digite um valor entre 1000 e 9999 \n");
+
         scanf("%d",&num);
         if ((num>=1000) & (num<=9999))
         {
@@ -20,6 +21,7 @@ int main()
 
         else
         {
+            printf("Digite um valor entre 1000 e 9999: \n");
             cont=cont +1;
         }
     }
