@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+int main()
+{
+    int i, cont, num, mod, mod1, mod2, mod3;
+
+    cont=1;
+    for(i=1; i<=cont; i++)
+    {
+        printf("Digite um valor entre 1000 e 9999 \n");
+        scanf("%d",&num);
+        if ((num>=1000) & (num<=9999))
+        {
+            mod = num % 10;  //split last digit from number
+            mod1 = ((num-mod)/10) % 10;
+            mod2 = ((num-mod1)/100) % 10;
+            mod3 = ((num-mod2)/1000) % 10;
+            printf("\n%i\n%i\n%i\n%i", mod3, mod2, mod1, mod);
+        }
+
+        else
+        {
+            cont=cont +1;
+        }
+    }
+    return 0;
+}
