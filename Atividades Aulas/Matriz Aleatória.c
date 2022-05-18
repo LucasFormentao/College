@@ -7,7 +7,6 @@ int main()
     int i, j, lin=3, col=2;
     int mat_1[lin][col];
     //O nome da matriz é o endereço que guarda a posição [0,0]//
-    printf("Entre com os valores da matriz:\n");
     srand(time(NULL));
     
     for(i=1; i<=lin;i++)
@@ -31,3 +30,4 @@ int main()
 
     return 0;
 }
+
