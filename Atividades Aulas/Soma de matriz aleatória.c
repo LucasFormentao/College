@@ -35,8 +35,6 @@ int main()
         }
         printf("\n");
     }
-    
-    
     printf("\nMatriz soma:\n");
     
     for(i=1; i<=lin;i++)
