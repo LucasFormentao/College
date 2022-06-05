@@ -2,7 +2,7 @@
 
 //char palavras[] = {"Vamos aprender a programar com C?"};
 
-// Imprimindo uam String:
+// Imprimindo uma String:
 
 char palavras[] = {"Vamos aprender a programar com C?"};
 printf("%s", palavras);
