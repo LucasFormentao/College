@@ -1,39 +1,40 @@
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+int i, k=0, m=0, boolean;
+char frase[100], contra[100];
 
 int main()
 {
-    int i, k, m, l;
-    char stra[100], strb[100], strc[100], strd[100];
-    printf("String:\n");
-    fgets(stra, 100, stdin);
+    int i, k=0, m=0, l=0;
+    char frase[100], final[100], limpo[100];
     
-    k = 0;
-    for(i=0; stra[i] != '\0'; i++)
+    printf("Digite:");
+    
+    fgets(frase, 100, stdin);
+    
+    for(i=0; frase[i] != '\0'; i++)
     {
-       if(stra[i] != ' ' && stra[i] != ',' && stra[i] != '.')
+       if(frase[i] != ' ' && frase[i] != ',' && frase[i] != '.' )
        {
-            strc[k] = stra[i];
-            k++;
+            limpo[l] = frase[i];
+            l++;
        }
     }
-    while((strc[k] != '\0') && (strc[k] != '\n'))
-    l++;
+    k = strlen(limpo)-1;
     
     m = 0;
-    
-    for(i = l-1; i >=0 ; i--)
+    for(i = k-1; i >=0 ; i--)
     {
-        strb[l] = strc[i];
+        contra[m] = limpo[i];
         m++;
     }
-    
-    printf("%s", strb);
-    
-    printf("%s", strc);
-    
-    if(strb == strc)
+    printf("\n%s\n", limpo);
+    printf("\n%s\n", contra);
+    boolean = strcmp(limpo,contra);
+    printf("\n%d\n", boolean);
+    if(strcmp(limpo,contra) == 10)
     {
         printf("A frase eh palindroma.");
     }
@@ -41,6 +42,12 @@ int main()
     {
         printf("A frase nao eh palindroma.");
     }
+    
+    for(i=0; i<20; i++)
+    {
+        printf("%c   %c\n", contra[i], limpo[i]);
+    }
+    
     
     return 0;
 }
