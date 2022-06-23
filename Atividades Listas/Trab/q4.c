@@ -36,7 +36,7 @@ int main()
         }
     }
     while (saque != 0);
-    printf("Notas entregue:\nR$100 --- %d\nR$50 ---- %d\nR$20 ---- %d\nR$10 ---- %d"\
+    printf("Notas entregues:\nR$100 --- %d\nR$50 ---- %d\nR$20 ---- %d\nR$10 ---- %d"\
     , cem, cinquenta, vinte, dez);
     return 0;
 }
