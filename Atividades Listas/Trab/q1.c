@@ -1,3 +1,6 @@
+/*
+Lucas Formentão Rodrigues - PRG22003
+*/
 #include <stdlib.h>
 #include <stdio.h>
 
