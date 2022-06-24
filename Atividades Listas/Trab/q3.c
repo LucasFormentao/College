@@ -19,7 +19,7 @@ int main()
     scanf("%d", &consumo);
     
     c_total = c_pista*voltas;
-    c_p_reab = c_total/num_reab;
+    c_p_reab = c_total/(num_reab+1);
     litros = c_p_reab/(1000*consumo);
     
     printf("\nSerão necessários %.2f litros de gasolina para percorrer até o primeiro reabastecimento.", litros);
