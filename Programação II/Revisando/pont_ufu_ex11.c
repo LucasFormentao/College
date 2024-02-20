@@ -18,7 +18,6 @@ int main()
         pont = &nums[i];
         printf("Digite o valor para a posição %d do array: ", i);
         scanf("%d", &*pont);
-        *pont = 2 * *pont;
     }
 
     for(i=0; i<=4; i++)
