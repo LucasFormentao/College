@@ -4,10 +4,8 @@
 //  EXERCÍCIOS PONTEIROS UFU EX.8
 
 /*
-Crie um programa que contenha uma funcao que permita passar por parametro dois
-numeros inteiros A e B. A funcao devera calcular a soma entre estes dois numeros e
-armazenar o resultado na variavel A. Esta funcao nao devera possuir retorno, mas devera
-modificar o valor do primeiro parametro. Imprima os valores de A e B na funcao principal.
+Crie um programa que contenha um array de float contendo 10 elementos. Imprima o
+enderec¸o de cada posic¸ao desse array. 
 */
 
 
