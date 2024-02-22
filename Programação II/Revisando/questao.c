@@ -30,9 +30,9 @@ struct meteoro
 
 int main()
 {
-    struct meteoro dados[100];
+    struct meteoro da[20];
     FILE *arq;
-    arq = fopen("dados.csv", "r");
+    arq = fopen("dados.txt", "r");
     char *token;
     
     if(arq == NULL)
@@ -42,14 +42,17 @@ int main()
     }
     
     int n=1;
-    while(!feof(arq))
+    while(n<=13)
     {
-        fscanf(arq,"%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]", dados.hora[n], dados.minuto[n], dados.tcelsius[n], dados.pmmhg[n], dados.local[n]);
+        fscanf(arq,"%d,%d,%d,%d,%[^,]\n", &da[n-1].hora, &da[n-1].minuto, &da[n-1].tcelsius, &da[n-1].pmmhg, da[n-1].local);
         n++;
     }
     fclose(arq);
     
-    
+    for(n=0; n<=12; n++)
+    {
+        printf("%d\n", da[n].hora);
+    }
     
     return 0;
 }
