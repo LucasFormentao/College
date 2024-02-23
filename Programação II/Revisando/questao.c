@@ -19,39 +19,54 @@ hora,minuto,tcelsius,pmmhg,local
 */
 
 
-struct meteoro
+typedef struct
 {
     int hora;
     int minuto;
     int tcelsius;
     int pmmhg;
-    char local[50];
-};
+    char local[10];
+} meteoro;
 
 int main()
 {
-    struct meteoro da[20];
     FILE *arq;
     arq = fopen("dados.txt", "r");
-    char *token;
-    
+
     if(arq == NULL)
     {
-        printf("Arquivo nao abriu.\n");
-        void exit();
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
     }
     
-    int n=1;
-    while(n<=13)
+    meteoro da[20];
+    
+    int ler = 0;
+    int cont = 0;
+    do
     {
-        fscanf(arq,"%d,%d,%d,%d,%[^,]\n", &da[n-1].hora, &da[n-1].minuto, &da[n-1].tcelsius, &da[n-1].pmmhg, da[n-1].local);
-        n++;
-    }
+        ler = fscanf(arq,"%d,%d,%d,%d,%[^\n]", &da[cont].hora, &da[cont].minuto, &da[cont].tcelsius, &da[cont].pmmhg, da[cont].local);
+        
+        if (ler == 5) cont++;
+        
+        if (ler != 5 && !feof(arq))
+        {
+            printf("Formato de arquivo incorreto.\n");
+            return 1;
+        }
+        
+        if (ferror(arq))
+        {
+            printf("Erro ao ler o arquivo.\n");
+            return 1;
+        }
+    }while (!feof(arq));
+    
     fclose(arq);
-    
-    for(n=0; n<=12; n++)
+    int n;
+    for(n=0; n<12; n++)
     {
-        printf("%d\n", da[n].hora);
+        printf("%d,%d,%d,%d,%s\n", da[n].hora, da[n].minuto, da[n].tcelsius, da[n].pmmhg, da[n].local);
     }
     
     return 0;
