@@ -20,13 +20,13 @@ int main()
 
     printf("Um vetor de 1500 posicoes foi criado usando malloc, a seguir estao:\n");
 
-    printf("O valor das primeiras 5 posicoes:\n");
+    printf("O valor das primeiras 10 posicoes:\n");
     for(i=0;i<10; i++)
     {
         printf("%d ", dados[i]);
     }
 
-    printf("\nO valor das ultimas 5 posicoes:\n");
+    printf("\nO valor das ultimas 10 posicoes:\n");
     for(i=1490;i<1500; i++)
     {
         printf("%d ", dados[i]);
