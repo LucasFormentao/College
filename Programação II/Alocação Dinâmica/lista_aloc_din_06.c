@@ -48,6 +48,6 @@ int main()
         printf("\nAno de nascimento: %d\n", dados[i].ano);
     }
 
-    
+    free(dados);
     return 0;
 }
