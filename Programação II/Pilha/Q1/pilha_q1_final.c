@@ -87,12 +87,12 @@ void teste_igual(pilha *p1, pilha *p2){
                 printf("\nAs duas pilhas sao iguais.\n");
             }
         }
-            
+
     }
 }
 
 void med_ma_me(pilha *p){
-    int menor, maior, soma, i, temp;
+    int menor, maior, soma, i;
     float media;
     no *aux;
     aux = p->topo;
@@ -100,7 +100,6 @@ void med_ma_me(pilha *p){
     menor = aux->n.num;
     maior = aux->n.num;
 
-    temp = aux->n.num;
     soma = aux->n.num;
 
     for(i=1; i<p->tam;i++){
@@ -112,8 +111,6 @@ void med_ma_me(pilha *p){
         if(aux->n.num > maior){
             maior = aux->n.num;
         }
-        
-        temp = aux->n.num;
     }
     media = soma/p->tam;
     printf("\nMenor Valor: %d;\nMaior Valor: %d;\nMedia: %.2f\n", menor, maior, media);
@@ -160,7 +157,6 @@ void par_impar(pilha *p, int opcao){
 }
 
 int main(){
-    no *remover;
     pilha p1, p2;
     int opcao;
     criar_pilha(&p1);
