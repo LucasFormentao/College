@@ -1,0 +1,228 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct{
+int num;
+}numeros;
+
+typedef struct No{
+    numeros n;
+    struct No *proximo;
+}no;
+
+typedef struct{
+    no *topo;
+    int tam;
+}fila;
+
+void criar_fila(fila *f){
+    f->topo = NULL;
+    f->tam = 0;
+}
+
+numeros ler(){
+    numeros n;
+    printf("Digite um numero inteiro: ");
+    scanf("%d", &n.num);
+    return n;
+}
+
+void imprimir(numeros n){
+    printf("Numero: %d\n", n.num);
+}
+
+void imprimir_fila(fila *f){
+    no *aux = f->topo;
+    printf("\n-------------- FILA TAM: %d -----------\n", f->tam);
+    while(aux){
+        imprimir(aux->n);
+        aux = aux->proximo;
+    }
+    printf("-------------- FIM FILA --------------\n");
+}
+
+void inserir(fila *f){
+    no *novo, *aux;
+    novo = malloc(sizeof(no));
+    if (novo){
+        novo->proximo = NULL;
+        novo->n = ler();
+        if(f->topo == NULL)
+            f->topo = novo;
+        else{
+            aux = f->topo;
+            while(aux->proximo){
+                aux = aux->proximo;
+            }
+            aux->proximo = novo;
+        }
+        f->tam ++;
+        printf("\nTamanho atual: %d\n", f->tam);
+    }
+    else{
+        printf("\nErro ao alocar memória\n");
+    }
+}
+
+void teste_igual(fila *f1, fila *f2){
+    int tam1, tam2, i;
+
+    tam1 = f1->tam;
+    tam2 = f2->tam;
+
+    no *aux1, *aux2;
+
+    aux1 = f1->topo;
+    aux2 = f2->topo;
+    if(tam1 != tam2){
+        if(tam1>tam2){
+            printf("\nA maior fila e P1\n");
+        }
+        else{
+            printf("\nA maior fila e P2\n");
+        }
+    }
+    else{
+        for(i = 0;i<f1->tam; i++){
+            if(aux1->n.num != aux2->n.num){
+                printf("\nAs filas sao diferentes mas possuem o mesmo tamanho.\n");
+                break;
+            }
+            aux1 = aux1->proximo;
+            aux2 = aux2->proximo;
+
+            if(i == f1->tam-1){
+                printf("\nAs duas filas sao iguais.\n");
+            }
+        }
+
+    }
+}
+
+void med_ma_me(fila *f){
+    int menor, maior, soma, i;
+    float media;
+    no *aux;
+    aux = f->topo;
+
+    menor = aux->n.num;
+    maior = aux->n.num;
+
+    soma = aux->n.num;
+
+    for(i=1; i<f->tam;i++){
+        aux = aux->proximo;
+        soma = soma + aux->n.num;
+        if(aux->n.num < menor){
+            menor = aux->n.num;
+        }
+        if(aux->n.num > maior){
+            maior = aux->n.num;
+        }
+    }
+    media = soma/f->tam;
+    printf("\nMenor Valor: %d;\nMaior Valor: %d;\nMedia: %.2f\n", menor, maior, media);
+}
+
+void transferir(fila *f1, fila *f2){
+    int i;
+    no *aux1, *aux2;
+    aux1 = f1->topo;
+    aux2 = f2->topo;
+
+    if(f1->tam != f2->tam){
+        printf("\nA transferencia so pode ser realizada com filas de mesmo tamanho.\n");
+    }
+    else{
+    for(i = 0;i < f1->tam;i++){
+        aux2->n.num = aux1->n.num;
+        aux1 = aux1->proximo;
+        aux2 = aux2->proximo;
+    }
+    }
+}
+
+void par_impar(fila *f, int opcao){
+    int qtd_par=0, qtd_impar=0, i;
+    no *aux = f->topo;
+
+    for(i=0;i < f->tam; i++){
+        if(aux->n.num % 2)
+        {
+            qtd_impar++;
+        }
+        else{
+            qtd_par++;
+        }
+        aux = aux->proximo;
+    }
+    if(opcao == 10 || opcao == 11){
+        printf("\nA fila possui %d numero(s) impares.\n", qtd_impar);
+    }
+    else if(opcao == 12 || opcao == 13){
+        printf("\nA fila possui %d numero(s) pares.\n", qtd_par);
+    }
+}
+
+int main(){
+    fila f1, f2;
+    int opcao;
+    criar_fila(&f1);
+    criar_fila(&f2);
+
+    do{
+        printf("\n0 - Sair\n1 - Inserir F1\n2 - Inserir F2\n3 - Imprimir F1\n4 - Imprimir F2\n");
+        printf("5 - Testar igual\n6 - med_ma_me F1\n7 - med_ma_me F2\n8 - Transferir F1 -> F2\n9 - Transferir F2 -> F1\n");
+        printf("10 - Impares em F1\n11 - Impares em F2\n12 - Pares em F1\n13 - Pares em F2\n");
+        scanf("%d", &opcao);
+        getchar();
+
+        switch(opcao){
+        case 1:
+            inserir(&f1);
+            break;
+        case 2:
+            inserir(&f2);
+            break;
+        case 3:
+            imprimir_fila(&f1);
+            break;
+        case 4:
+            imprimir_fila(&f2);
+            break;
+        case 5:
+            teste_igual(&f1,&f2);
+            break;
+        case 6:
+            med_ma_me(&f1);
+            break;
+        case 7:
+            med_ma_me(&f2);
+            break;
+        case 8:
+            transferir(&f1, &f2);
+            break;
+        case 9:
+            transferir(&f2, &f1);
+            break;
+        case 10:
+            par_impar(&f1, opcao);
+            break;
+        case 11:
+            par_impar(&f2, opcao);
+            break;
+        case 12:
+            par_impar(&f1, opcao);
+            break;
+        case 13:
+            par_impar(&f2, opcao);
+            break;
+        default:
+            if(opcao != 0)
+                printf("\nOpcao invalida!!!\n");
+        }
+    }while(opcao != 0);
+    printf("Encerrando o programa...");
+    return 0;
+}
+
