@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "header.h"
 
 
@@ -56,12 +57,47 @@ void insere_contato(Agenda *agenda){
             novo->prox = NULL;
             agenda->inicio = novo;
         }
-        else{
-            aux = agenda->inicio;
-            //dar algum jeito de comparar strings e ver se sao iguais
+        else if(strcmp(novo->info.nome, agenda->inicio->info.nome) < 0){
+                novo->prox = agenda->inicio;
+                agenda->inicio = novo;
         }
-
+        else{
+                aux = agenda->inicio;
+        while (strcmp(novo->info.nome, agenda->inicio->info.nome) > 0){
+            aux = aux->prox;
+        }
+        novo->prox = aux->prox;
+        aux->prox = novo;
+        }
     }
     else
         printf("Erro ao alocar memoria.\n");
 }
+
+void remover_duplicados(Agenda *agenda){
+    No *aux, *remover = NULL;
+    char string[40];
+    printf("Digite o nome do contato que deseja excluir");
+    scanf("%s", string);
+    if(agenda->inicio){
+        if(strcmp(agenda->inicio->info.nome,string) == 0){
+            remover = agenda->inicio;
+            agenda->inicio = remover->prox;
+            agenda->tam--;
+        }
+        else{
+            aux = agenda->inicio;
+            while(aux->prox){
+            while(strcmp(agenda->inicio->info.nome,string) != 0){
+                aux = aux->prox;
+            }
+            if(aux->prox){
+                remover = aux->prox;
+                aux->prox = remover->prox;
+                agenda->tam--;
+            }
+            }
+        }
+    }
+}
+
