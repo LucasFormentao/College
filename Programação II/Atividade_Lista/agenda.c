@@ -11,8 +11,8 @@ struct data{
 
 struct contato{
     char nome[40];
-    char telefone[15];
-    char celular[15];
+    char telefone[20];
+    char celular[20];
     char email[40];
     Data aniversario;
 };
@@ -27,25 +27,35 @@ struct lista{
     int tam;
 };
 
-void criar_agenda(Agenda *agenda){
+Agenda *criar_agenda(){
+    Agenda *agenda = (Agenda*) calloc(1,sizeof(Agenda));
     agenda->inicio = NULL;
     agenda->tam = 0;
+    return agenda;
 }
 
 Contato ler_info(){
     Contato c;
+
     printf("\nDigite o nome do novo contato (letras minusculas apenas):\n");
-    scanf("%39s", c.nome);
+    fgets(c.nome, sizeof(c.nome), stdin);
+
     printf("\nDigite o telefone:\n");
-    scanf("%15s", c.telefone);
+    fgets(c.telefone, sizeof(c.telefone), stdin);
+
     printf("\nDigite o celular:\n");
-    scanf("%15s", c.celular);
+    fgets(c.celular, sizeof(c.celular), stdin);
+
     printf("\nDigite o email:\n");
-    scanf("%39s", c.email);
+    fgets(c.email, sizeof(c.email), stdin);
+
     printf("\nDigite o dia de nascimento:\n");
     scanf("%d", &c.aniversario.dia);
+
     printf("\nDigite o mes de nascimento:\n");
     scanf("%d", &c.aniversario.mes);
+
+    fflush(stdin);
     return c;
 }
 
@@ -70,40 +80,34 @@ void insere_contato(Agenda *agenda){
                 agenda->inicio = novo;
         }
         else{
-                aux = agenda->inicio;
-        while (strcmp(novo->info.nome, agenda->inicio->info.nome) > 0){
-            aux = aux->prox;
-        }
-        novo->prox = aux->prox;
-        aux->prox = novo;
+            aux = agenda->inicio;
+            while(aux->prox){
+                if(strcmp(aux->prox->info.nome, novo->info.nome) < 0){
+                    aux = aux->prox;
+                }
+                else{
+                    break;
+                }
+            }
+            novo->prox = aux->prox;
+            aux->prox = novo;
         }
         agenda->tam++;
     }
     else
-        printf("Erro ao alocar memoria.\n");
+        printf("\nErro ao alocar memoria.\n");
 }
 
 void remove_contato(Agenda *agenda, char *string){
     No *aux, *remover = NULL;
-    if(agenda->inicio){
-        if(strcmp(agenda->inicio->info.nome,string) == 0){
-            remover = agenda->inicio;
-            agenda->inicio = remover->prox;
-            agenda->tam--;
-        }
-        else{
-            aux = agenda->inicio;
-            while(aux->prox){
-            while(strcmp(aux->info.nome,string) != 0){
-                aux = aux->prox;
-            }
-            if(aux->prox){
-                remover = aux->prox;
-                aux->prox = remover->prox;
-                agenda->tam--;
-            }
-            }
-        }
+    //char string[40];
+    //printf("\nDigite o nome:\n");
+    //fgets(string, sizeof(string), stdin);
+    aux = busca_contato(agenda, 1, string);
+    if(aux){
+        remover = aux->prox;
+        aux->prox = remover->prox;
+        agenda->tam--;
     }
 }
 
@@ -119,28 +123,39 @@ void lista_contatos(Agenda *agenda){
     }
 }
 
-No* busca_contato(Agenda *agenda){
-    char nome[40];
-    No *aux;
-    printf("\nDigite o nome do contato:\n");
-    scanf("%s", nome);
-
+No* busca_contato(Agenda *agenda, int i, char *nome){
+    /*
+    A variável i serve como controle auxiliar, quando o valor desta for:
+    i = 1: a função retornará o endereço do contato anterior;
+    i = 2: a função retornará o endereço do contato.
+    */
+    No *aux, *aux2;
+    aux = agenda->inicio;
     while(strcmp(aux->info.nome,nome) != 0){
+            if(aux->prox){
+            aux2 = aux;
             aux = aux->prox;
+            }
+            else{
+                printf("\n***Contato nao encontrado***\n");
+                return NULL;
+            }
         }
-    if(aux->prox){
-        return aux;
+    if(i == 1){
+    return aux2;
     }
-    else
-        exit(0);
+    else if(i == 2){
+    return aux;
+    }
+    else return 0;
 }
 
-int conta_duplicados(Agenda *agenda, char *string){
+int conta_duplicados(Agenda *agenda, char *nome){
     No *aux;
     int i=0;
     aux = agenda->inicio;
     while(aux){
-        if(strcmp(aux->info.nome,string) ==0){
+        if(strcmp(aux->info.nome,nome) ==0){
             i++;
         }
         aux = aux->prox;
@@ -148,21 +163,21 @@ int conta_duplicados(Agenda *agenda, char *string){
     return i;
 }
 
-void remove_duplicados(Agenda *agenda, char *string){
-int qtd = conta_duplicados(agenda, string);
+void remove_duplicados(Agenda *agenda, char *nome){
+int qtd = conta_duplicados(agenda, nome);
 int i = 0;
 if(qtd>1){
     for(i=0;i<(qtd-1);i++){
-        remove_contato(agenda, string);
+        remove_contato(agenda, nome);
     }
 }
 printf("\n***Contatos duplicados excluidos.***\n");
 }
 
-void atualiza_contato(Agenda *agenda, char *string){
+void atualiza_contato(Agenda *agenda, char *nome){
 Contato ctt_att;
 No *ctt;
-ctt = busca_contato(agenda);
+ctt = busca_contato(agenda, 2, nome);
 ctt_att = ler_info();
 ctt->info = ctt_att;
 printf("\n***Contato atualizado.***\n");
