@@ -22,7 +22,7 @@ struct no{
     struct no* prox;
 };
 
-struct agenda{
+struct lista{
     No *inicio;
     int tam;
 };
@@ -34,7 +34,7 @@ void criar_agenda(Agenda *agenda){
 
 Contato ler_info(){
     Contato c;
-    printf("\nDigite o nome do novo contato:\n");
+    printf("\nDigite o nome do novo contato (letras minusculas apenas):\n");
     scanf("%39s", c.nome);
     printf("\nDigite o telefone:\n");
     scanf("%15s", c.telefone);
@@ -83,11 +83,8 @@ void insere_contato(Agenda *agenda){
         printf("Erro ao alocar memoria.\n");
 }
 
-void remover_duplicados(Agenda *agenda){
+void remove_contato(Agenda *agenda, char *string){
     No *aux, *remover = NULL;
-    char string[40];
-    printf("Digite o nome do contato que deseja excluir");
-    scanf("%s", string);
     if(agenda->inicio){
         if(strcmp(agenda->inicio->info.nome,string) == 0){
             remover = agenda->inicio;
@@ -122,9 +119,8 @@ void lista_contatos(Agenda *agenda){
     }
 }
 
-Contato busca_contato(Agenda *agenda){
+No* busca_contato(Agenda *agenda){
     char nome[40];
-    int i;
     No *aux;
     printf("\nDigite o nome do contato:\n");
     scanf("%s", nome);
@@ -133,8 +129,41 @@ Contato busca_contato(Agenda *agenda){
             aux = aux->prox;
         }
     if(aux->prox){
-        return aux->prox->info;
+        return aux;
     }
     else
         exit(0);
+}
+
+int conta_duplicados(Agenda *agenda, char *string){
+    No *aux;
+    int i=0;
+    aux = agenda->inicio;
+    while(aux){
+        if(strcmp(aux->info.nome,string) ==0){
+            i++;
+        }
+        aux = aux->prox;
+    }
+    return i;
+}
+
+void remove_duplicados(Agenda *agenda, char *string){
+int qtd = conta_duplicados(agenda, string);
+int i = 0;
+if(qtd>1){
+    for(i=0;i<(qtd-1);i++){
+        remove_contato(agenda, string);
+    }
+}
+printf("\n***Contatos duplicados excluidos.***\n");
+}
+
+void atualiza_contato(Agenda *agenda, char *string){
+Contato ctt_att;
+No *ctt;
+ctt = busca_contato(agenda);
+ctt_att = ler_info();
+ctt->info = ctt_att;
+printf("\n***Contato atualizado.***\n");
 }
