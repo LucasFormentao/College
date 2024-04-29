@@ -98,17 +98,19 @@ void insere_contato(Agenda *agenda){
         printf("\nErro ao alocar memoria.\n");
 }
 
-void remove_contato(Agenda *agenda, char *string){
+No *remove_contato(Agenda *agenda, char *string){
     No *aux, *remover = NULL;
-    //char string[40];
-    //printf("\nDigite o nome:\n");
-    //fgets(string, sizeof(string), stdin);
     aux = busca_contato(agenda, 1, string);
     if(aux){
         remover = aux->prox;
         aux->prox = remover->prox;
         agenda->tam--;
+        free(remover);
     }
+    else{
+        printf("Erro: ponteiro inexistente.");
+    }
+    return aux->prox;
 }
 
 void lista_contatos(Agenda *agenda){
@@ -127,10 +129,12 @@ No* busca_contato(Agenda *agenda, int i, char *nome){
     /*
     A variável i serve como controle auxiliar, quando o valor desta for:
     i = 1: a função retornará o endereço do contato anterior;
-    i = 2: a função retornará o endereço do contato.
+    i = 2: a função retornará o endereço do contato;
+    i = 3: apenas para busca, printa o contato depois.
     */
     No *aux, *aux2;
     aux = agenda->inicio;
+    aux2 = aux;
     while(strcmp(aux->info.nome,nome) != 0){
             if(aux->prox){
             aux2 = aux;
@@ -142,9 +146,15 @@ No* busca_contato(Agenda *agenda, int i, char *nome){
             }
         }
     if(i == 1){
+
     return aux2;
     }
     else if(i == 2){
+    return aux;
+    }
+    else if(i==3){
+    printf("***Contato encontrado!***");
+    print_contato(&aux->info);
     return aux;
     }
     else return 0;
@@ -163,15 +173,29 @@ int conta_duplicados(Agenda *agenda, char *nome){
     return i;
 }
 
-void remove_duplicados(Agenda *agenda, char *nome){
-int qtd = conta_duplicados(agenda, nome);
-int i = 0;
-if(qtd>1){
-    for(i=0;i<(qtd-1);i++){
-        remove_contato(agenda, nome);
+void remove_duplicados(Agenda *agenda){
+No *aux;
+int qtd;
+int i, tem=0;
+aux = agenda->inicio;
+while(aux){
+    printf("\nNome:%s", aux->info.nome);
+    qtd = conta_duplicados(agenda, aux->info.nome);
+    printf("\nQuantidade de contatos com este nome: %d\n", qtd);
+    i = 0;
+    if(qtd>1){
+        for(i=0;i<(qtd-1);i++){
+            aux = remove_contato(agenda, aux->info.nome);
+            tem = 1;
+        }
     }
+    aux = aux->prox;
 }
-printf("\n***Contatos duplicados excluidos.***\n");
+if(tem == 0)
+    printf("\nNao ha contatos duplicados.\n");
+else
+    printf("\n***Contatos duplicados excluidos.***\n");
+
 }
 
 void atualiza_contato(Agenda *agenda, char *nome){
@@ -180,5 +204,17 @@ No *ctt;
 ctt = busca_contato(agenda, 2, nome);
 ctt_att = ler_info();
 ctt->info = ctt_att;
-printf("\n***Contato atualizado.***\n");
+printf("\n***Contato atualizado***\n");
+}
+
+void libera_agenda(Agenda *agenda){
+    No *aux1, *aux2;
+    aux1 = agenda->inicio;
+    while(aux1){
+        aux2 = aux1->prox;
+        free(aux1);
+        aux1 = aux2;
+    }
+    free(agenda);
+    printf("\n***Agenda liberada***\n");
 }
