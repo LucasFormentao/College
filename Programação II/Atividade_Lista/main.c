@@ -9,7 +9,7 @@ int main()
     char *nome = (char*) malloc(500);
     do{
         printf("\n1 - Inserir Contato\n2 - Listar Contatos\n3 - Buscar Contato\n4 - Editar Contato\n");
-        printf("5 - Remover Contato\n6 - Remover Duplicados\n7 - Sair\n");
+        printf("5 - Remover Contato\n6 - Remover Duplicados\n7 - Liberar Agenda\n8 - Sair\n");
         scanf("%d", &opcao);
         getchar();
 
@@ -23,7 +23,7 @@ int main()
         case 3:
             printf("\nDigite o nome:\n");
             fgets(nome, sizeof(char)*40, stdin);
-            busca_contato(agenda,2,nome);
+            busca_contato(agenda,3,nome);
             break;
         case 4:
             printf("\nDigite o nome:\n");
@@ -36,12 +36,14 @@ int main()
             remove_contato(agenda,nome);
             break;
         case 6:
-            printf("\nDigite o nome:\n");
-            fgets(nome, sizeof(char)*40, stdin);
-            remove_duplicados(agenda,nome);
+            remove_duplicados(agenda);
             break;
+        case 7:
+            libera_agenda(agenda);
+            printf("Encerrando o programa...");
+            return 0;
         default:
-            if(opcao != 7)
+            if(opcao != 8)
                 printf("\nOpcao invalida!!!\n");
         }
     }while(opcao != 0);
