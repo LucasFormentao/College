@@ -123,9 +123,9 @@ int main(){
     imprimir(maior, 0);
     busca = buscar(raiz, 7);
     if(busca)
-        printf("\n\tValor encontrado: %d\n", busca->info);
+        printf("\nValor encontrado: %d\n", busca->info);
     else
-        printf("\n\tValor nao encontrado!\n");
+        printf("\nValor nao encontrado!\n");
     menor = menorElemento(raiz);
     printf("No do menor elemento:\n");
     imprimir(menor, 0);
