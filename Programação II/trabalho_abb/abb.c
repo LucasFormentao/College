@@ -23,7 +23,7 @@ NoABB *abb_cria(){
 }
 
 Aluno ler_info(){
-    Aluno a;
+    Aluno *a = malloc(sizeof(Aluno));
     printf("\nDigite o nome do novo aluno (letras minusculas apenas):\n");
     fgets(a.nome, sizeof(a.nome), stdin);
 
@@ -58,6 +58,8 @@ NoABB* abb_insere(NoABB *raiz){
         aux->dir = NULL;
         return aux;
     }
+    else
+        printf("\nNao foi possivel alocar a memoria!\n");
 }
 
 void abb_imprime(NoABB *raiz){
@@ -68,6 +70,25 @@ void abb_imprime(NoABB *raiz){
         printf("\nMedia: %f\n", raiz->info->media);
         abb_imprime(raiz->dir);
     }
+}
+
+void abb_libera(NoABB *raiz){
+    if(raiz){
+        abb_libera(raiz->esq);
+        abb_libera(raiz->dir);
+        free(raiz);
+    }
+}
+
+void abb_alunoComMaiorMedia(NoABB *raiz){
+    NoABB *aux = raiz;
+    while(aux->dir =! NULL){
+        aux = aux->dir;
+    }
+    printf("\nDados do aluno com maior média:\n");
+    printf("\nAluno: %s", aux->info->nome);
+    printf("\nMatricula: %d", aux->info->matricula);
+    printf("\nMedia: %f\n", aux->info->media);
 }
 
 int main(){
@@ -85,7 +106,7 @@ int main(){
             scanf("%d", &valor);
             //raiz = abb_insere(raiz, valor);
             //inserir_versao_2(&raiz, valor);
-            inserir_versao_3(&raiz, valor);
+            abb_insere(&raiz);
             break;
         case 2:
             printf("\n\tPrimeira impressao:\n\t");
@@ -129,4 +150,3 @@ int main(){
 
     return 0;
 }
-
