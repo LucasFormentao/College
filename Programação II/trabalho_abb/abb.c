@@ -145,6 +145,22 @@ int main() {
     raiz = abb_insere(raiz);
     printf("Inserindo aluno 3:\n");
     raiz = abb_insere(raiz);
+    printf("Inserindo aluno 4:\n");
+    raiz = abb_insere(raiz);
+    printf("Inserindo aluno 5:\n");
+    raiz = abb_insere(raiz);
+
+    // Imprimindo a árvore
+    printf("Árvore de alunos:\n");
+    abb_imprime(raiz);
+
+    // Imprimindo aluno com a maior média
+    printf("Aluno com a maior média:\n");
+    abb_alunoComMaiorMedia(raiz)
+
+    // Contando alunos aprovados
+    int aprovados = abb_contaAprovados(raiz);
+    printf("Número de alunos aprovados: %d\n", aprovados);
     
     // Contando alunos em intervalo
     float min = 5.0, max = 7.0;
