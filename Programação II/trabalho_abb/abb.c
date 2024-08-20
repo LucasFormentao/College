@@ -135,62 +135,24 @@ int abb_contaIntervalo(NoABB *raiz, float min, float max){
     return num;
 }
 
-int main(){
-
-    NoABB *busca, *raiz = NULL;
-    int opcao, valor;
-
-    do{
-        printf("\n\t0 - Sair\n\t1 - Inserir\n\t2 - Imprimir\n\t3 - Buscar\n\t4 - Altura\n\t5 - Tamanho\n\t6 - Folhas\n\t7 - Remover\n");
-        scanf("%d", &opcao);
-
-        switch(opcao){
-        case 1:
-            printf("\n\tDigite um valor: ");
-            scanf("%d", &valor);
-            //raiz = abb_insere(raiz, valor);
-            //inserir_versao_2(&raiz, valor);
-            abb_insere(&raiz);
-            break;
-        case 2:
-            printf("\n\tPrimeira impressao:\n\t");
-            imprimir_versao_1(raiz);
-            printf("\n");
-            printf("\n\tSegunda impressao:\n\t");
-            abb_imprime(raiz);
-            printf("\n");
-            break;
-        case 3:
-            printf("\n\tDigite o valor a ser procurado: ");
-            scanf("%d", &valor);
-            //busca = buscar_versao_1(raiz, valor);
-            busca = buscar_versao_2(raiz, valor);
-            if(busca)
-                printf("\n\tValor encontrado: %d\n", busca->valor);
-            else
-                printf("\n\tValor nao encontrado!\n");
-            break;
-        case 4:
-            printf("\n\tAltura da arvore: %d\n\n", altura(raiz));
-            break;
-        case 5:
-            printf("\n\tQuantidade de nos: %d\n", quantidade_nos(raiz));
-            break;
-        case 6:
-            printf("\n\tQuantidade folhas: %d\n", quantidade_folhas(raiz));
-            break;
-        case 7:
-            printf("\t");
-            abb_imprime(raiz);
-            printf("\n\tDigite o valor a ser removido: ");
-            scanf("%d", &valor);
-            raiz = remover(raiz, valor);
-            break;
-        default:
-            if(opcao != 0)
-                printf("\n\tOpcao invalida!!!\n");
-        }
-    }while(opcao != 0);
-
+int main() {
+    NoABB *raiz = abb_cria();
+    
+    // Inserindo alunos
+    printf("Inserindo aluno 1:\n");
+    raiz = abb_insere(raiz);
+    printf("Inserindo aluno 2:\n");
+    raiz = abb_insere(raiz);
+    printf("Inserindo aluno 3:\n");
+    raiz = abb_insere(raiz);
+    
+    // Contando alunos em intervalo
+    float min = 5.0, max = 7.0;
+    int count = abb_contaIntervalo(raiz, min, max);
+    printf("Número de alunos com média entre %.2f e %.2f: %d\n", min, max, count);
+    
+    // Liberar memória
+    abb_libera(raiz);
+    
     return 0;
 }
