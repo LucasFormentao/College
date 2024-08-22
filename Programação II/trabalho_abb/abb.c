@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 typedef struct aluno{
@@ -15,50 +16,62 @@ typedef struct noABB{
 }NoABB;
 
 NoABB *abb_cria(){
-    NoABB *raiz = malloc(sizeof(NoABB));
-    raiz->esq = NULL;
-    raiz->dir = NULL;
-    return raiz;
+    return NULL;
 }
 
 Aluno *ler_info(){
     Aluno *a = malloc(sizeof(Aluno));
-    printf("\nDigite o nome do novo aluno:\n");
-    fgets(a.nome, sizeof(a.nome), stdin);
+    if (a) {
+        printf("\nDigite o nome do novo aluno:\n");
+        fgets(a->nome, sizeof(a->nome), stdin);
 
-    printf("\nDigite a matricula:\n");
-    scanf("%d", &a.matricula);
+        a->nome[strcspn(a->nome, "\n")] = 0;
 
-    printf("\nDigite a media:\n");
-    scanf("%f", &a.media);
-    fflush(stdin);
+        printf("\nDigite a matricula:\n");
+        scanf("%d", &a->matricula);
+
+        printf("\nDigite a media:\n");
+        scanf("%f", &a->media);
+
+        while (getchar() != '\n');
+    }
     return a;
 }
 
 NoABB* abb_insere(NoABB *raiz){
     NoABB *novo = malloc(sizeof(NoABB));
-    NoABB *aux = raiz;
-    if(novo){
+    if (novo) {
         novo->info = ler_info();
-        novo->dir = NULL;
         novo->esq = NULL;
+        novo->dir = NULL;
 
-        if(raiz == NULL){
+        if (raiz == NULL) {
             return novo;
         }
 
-        while(aux){
-            if(novo->info->media < aux->info->media)
-                raiz = &aux->esq;
-            else
-                raiz = &aux->dir;
-            aux = *raiz;
+        NoABB *pai = NULL;
+        NoABB *aux = raiz;
+
+        while (aux) {
+            pai = aux;
+            if (novo->info->media < aux->info->media) {
+                aux = aux->esq;
+            } else {
+                aux = aux->dir;
+            }
         }
-        aux = novo;
-        return aux;
-    }
-    else
+
+        if (novo->info->media < pai->info->media) {
+            pai->esq = novo;
+        } else {
+            pai->dir = novo;
+        }
+
+        return raiz;
+    } else {
         printf("\nNao foi possivel alocar a memoria!\n");
+        return NULL;
+    }
 }
 
 void abb_imprimeIndividual(Aluno *info){
@@ -68,11 +81,16 @@ void abb_imprimeIndividual(Aluno *info){
 }
 
 void abb_imprime(NoABB *raiz){
-    if(raiz){
+    if(raiz == NULL)
+        return;
+
+    if(raiz->esq)
         abb_imprime(raiz->esq);
-        abb_imprimeIndividual(raiz->info);
+
+    abb_imprimeIndividual(raiz->info);
+
+    if(raiz->dir)
         abb_imprime(raiz->dir);
-    }
 }
 
 void abb_libera(NoABB *raiz){
@@ -89,14 +107,14 @@ void abb_alunoComMaiorMedia(NoABB *raiz){
     while(aux->dir != NULL){
         aux = aux->dir;
     }
-    printf("\nDados do aluno com maior média:");
+    printf("\nDados do aluno com maior media:");
     abb_imprimeIndividual(aux->info);
 }
 
 int abb_contaAprovados(NoABB *raiz){
     if(raiz == NULL)
         return 0;
-    
+
     if(raiz->info->media >= 6)
         return 1 + abb_contaAprovados(raiz->esq) + abb_contaAprovados(raiz->dir);
     else
@@ -120,16 +138,14 @@ void abb_imprimeAprovados(NoABB *raiz){
 int abb_contaIntervalo(NoABB *raiz, float min, float max){
     if(raiz == NULL)
         return 0;
-    
+
     int num = 0;
 
-    if(raiz->info->media >= min)
-        num += abb_contaIntervalo(raiz->dir, min, max);
-
     if(raiz->info->media >= min && raiz->info->media <= max)
-        num++;
-
-    if(raiz->info->media <= max)
+        num ++;
+    if (raiz->info->media > min)
+        num += abb_contaIntervalo(raiz->esq, min, max);
+    if (raiz->info->media < max)
         num += abb_contaIntervalo(raiz->dir, min, max);
 
     return num;
@@ -137,38 +153,40 @@ int abb_contaIntervalo(NoABB *raiz, float min, float max){
 
 int main() {
     NoABB *raiz = abb_cria();
-    
+
     // Inserindo alunos
     printf("Inserindo aluno 1:\n");
     raiz = abb_insere(raiz);
     printf("Inserindo aluno 2:\n");
     raiz = abb_insere(raiz);
+    /*
     printf("Inserindo aluno 3:\n");
     raiz = abb_insere(raiz);
     printf("Inserindo aluno 4:\n");
     raiz = abb_insere(raiz);
     printf("Inserindo aluno 5:\n");
     raiz = abb_insere(raiz);
-
+    */
     // Imprimindo a árvore
-    printf("Árvore de alunos:\n");
+    printf("Arvore de alunos:\n");
     abb_imprime(raiz);
 
     // Imprimindo aluno com a maior média
-    printf("Aluno com a maior média:\n");
-    abb_alunoComMaiorMedia(raiz)
+    abb_alunoComMaiorMedia(raiz);
 
     // Contando alunos aprovados
-    int aprovados = abb_contaAprovados(raiz);
-    printf("Número de alunos aprovados: %d\n", aprovados);
-    
+    printf("Numero de alunos aprovados: %d\n", abb_contaAprovados(raiz));
+
     // Contando alunos em intervalo
     float min = 5.0, max = 7.0;
     int count = abb_contaIntervalo(raiz, min, max);
-    printf("Número de alunos com média entre %.2f e %.2f: %d\n", min, max, count);
-    
+    printf("Numero de alunos com media entre %.2f e %.2f: %d\n", min, max, count);
+
+
+    printf("\n\nTESTE\n\n");
+    abb_imprimeIndividual(raiz->info);
     // Liberar memória
     abb_libera(raiz);
-    
+
     return 0;
 }
